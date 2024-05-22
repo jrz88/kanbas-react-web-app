@@ -6,6 +6,7 @@ import Lab3 from "./Lab3";
 export default function Labs() {
   return (
     <div>
+      <h1>Jiarong zhu Summer Full 2024</h1>
       <h1>Labs</h1>
       <TOC />
       <Routes>
