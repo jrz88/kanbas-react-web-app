@@ -1,0 +1,40 @@
+.small-text {
+    font-size: 0.9em;
+}
+
+.rounded-corners-all-around {
+    border-radius: 50px;
+}
+
+.border-thin {
+    border-width: 1px;
+}
+
+.border-solid {
+    border-style: solid;
+}
+
+.padding-fat {
+    padding: 10px;
+}
+
+
+.border-gray {
+    border-color: #33332d;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.no-underline {
+    text-decoration: none;
+}
+
+.text-black {
+    color: black;
+}
+
+.green-left-border {
+    border-left: 3px solid green; 
+}
