@@ -57,9 +57,6 @@ export default function Grades() {
                             <td><input type="text" value="100%" /></td>
                             <td><input type="text" value="100%" /></td>
                         </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+                    </tbody> </table></div></div>
     );
 }
