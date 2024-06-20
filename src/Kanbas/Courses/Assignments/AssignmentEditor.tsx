@@ -1,4 +1,8 @@
+import {useParams} from "react-router";
+import assignments from "../../Database/assignments.json";
 export default function AssignmentEditor() {
+    const { aid} = useParams();
+    const assignment = assignments.find((a)=> a._id===aid);
     return (
         <div id="wd-assignment-editor" className="pt-2">
             <form>
@@ -6,22 +10,13 @@ export default function AssignmentEditor() {
                     <label htmlFor="wd-name" className="col-sm-2 col-form-label">
                         Assignment Name </label>
                     <div className="col-sm-12">
-                        <input id="wd-name" className="form-control" value="A1" />
+                        <input id="wd-name" className="form-control" value={assignment && assignment.title ? `${assignment.title}` : ""} />
                     </div> </div>
 
                 <div className="row mb-3 ">
                     <div className="col-sm-12">
                         <textarea className="col-sm-12 form-control" id="wd-description" rows={15}>
-                            The assignment is available onlineLinks to an external site.
-                            Submit a link to the landing page of your Web application running on Netlify.
-
-                            The landing page should include the following:
-
-                            Your full name and section
-                            Links to each of the lab assignments
-                            Link to the Kanbas application
-                            Links to all relevant source code repositories
-                            The Kanbas application should include a link to navigate back to the landing page.
+                        {assignment && assignment.description ? `${assignment.description}` : ""}
                         </textarea>
                     </div>
                 </div>
@@ -31,7 +26,7 @@ export default function AssignmentEditor() {
                         <label htmlFor="wd-points" className="col-sm-2 col-form-label">
                             Points</label> </div>
                     <div className="col">
-                        <input id="wd-points" className="form-control" value="100" />
+                        <input id="wd-points" className="form-control" value={assignment && assignment.points ? `${assignment.points}` : ""} />
                     </div>
                 </div>
 
@@ -117,7 +112,7 @@ export default function AssignmentEditor() {
                                     <label htmlFor="wd-due-date" className="col col-form-label">
                                         Due </label>
                                     <div className="col-sm-12">
-                                        <input id="wd-due-date" className="form-control" type="date" value="2024-05-13" />
+                                        <input id="wd-due-date" className="form-control" type="date" value={assignment && assignment.due ? `${assignment.availableUntil}` : ""} />
                                     </div>
                                 </div>
 
@@ -125,9 +120,18 @@ export default function AssignmentEditor() {
                                     <label htmlFor="wd-available-from" className="col col-form-label">
                                         Available from </label>
                                     <div className="col-sm-12">
-                                        <input id="wd-available-from" className="form-control" type="date" value="2024-05-06" />
+                                        <input id="wd-available-from" className="form-control" type="date" value={assignment && assignment.availableFrom ? `${assignment.availableFrom}` : ""} />
                                     </div>
                                 </div>
+
+                                <div className="row mb-3">
+                                    <label htmlFor="wd-available-from" className="col col-form-label">
+                                        until </label>
+                                    <div className="col-sm-12">
+                                        <input id="wd-available-to" className="form-control" type="date"value={assignment && assignment.availableUntil ? `${assignment.availableUntil}` : ""} />
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
