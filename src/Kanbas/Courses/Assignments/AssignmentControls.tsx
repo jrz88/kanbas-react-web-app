@@ -1,7 +1,10 @@
 import { FaPlus } from "react-icons/fa6";
 import { HiMagnifyingGlass } from "react-icons/hi2";
+import { useParams } from "react-router";
 
 export default function AssignmentControls() {
+    const { cid } = useParams()
+
     return (
         <div id="wd-assignment-controls" className="text-nowrap d-flex">
             <div id="wd-search-assignment" className="input-group me-1">
@@ -17,10 +20,10 @@ export default function AssignmentControls() {
                     </button>
                 </div>
                 <div id="wd-add-assignment">
-                    <button id="wd-add-assignment-btn" className="btn btn-lg btn-danger me-1 float-end">
+                    <a id="wd-add-assignment-btn" className="btn btn-lg btn-danger me-1 float-end" href={`#/Kanbas/Courses/${cid}/Assignments/new`} >
                         <FaPlus className="position-relative me-2" style={{ bottom: "1px" }} />
                         Assignment
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

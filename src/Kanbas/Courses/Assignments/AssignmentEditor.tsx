@@ -1,8 +1,21 @@
 import {useParams} from "react-router";
 import assignments from "../../Database/assignments.json";
+import {useDispatch, useSelector} from "react-redux";
+import {useState} from "react";
+import {addAssignment, updateAssignment} from "./reducer";
+
 export default function AssignmentEditor() {
-    const { aid} = useParams();
-    const assignment = assignments.find((a)=> a._id===aid);
+ const {cid} = useParams();
+    const {aid} = useParams();
+    const isNew = aid === "new";
+    const dispatch = useDispatch();
+
+
+
+    const {assignments} = useSelector((state: any) => state.assignmentReducer);
+    const initAssignment = assignments.find((a: any) => a._id === aid) || {};
+    const [assignment, setAssignment] = useState(initAssignment);
+
     return (
         <div id="wd-assignment-editor" className="pt-2">
             <form>

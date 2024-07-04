@@ -7,11 +7,15 @@ import * as db from "../../Database";
 import { useParams } from "react-router";
 
 export default function Grades() {
-    const { cid } = useParams();
-    const students = db.users.filter(user => user.role === "STUDENT");
-    const courseGrade = db.grades;
-    const courseAssignments = db.assignments.filter(assignment => assignment.course === cid);
-    const enrolledStudents = db.enrollments.filter(enrollment => enrollment.course === cid).map(enrollment => enrollment.user);
+    const{cid} = useParams();
+    const{aid} = useParams();
+    const assignments = db.assignments.filter((assignment)=> assignment.course === cid);
+    const enrolledIDs = db.enrollments
+        .filter((enrollment)=> enrollment.course === cid)
+        .map((enrollment)=> enrollment.user);
+    const students = db.users.filter((user)=>user.role === "STUDENT");
+    const grades = db.grades;
+
     return (
         <div id="wd-grades">
             <GradesButtons /><br /><br /><br /> <br />
@@ -20,15 +24,15 @@ export default function Grades() {
                     <label className="form-label fw-bold">
                         Student Names</label>
                     <div className="input-group">
-                        <a className="input-group-text"> <FaSearch /></a>
+                        <a className="input-group-text"> <FaSearch/></a>
                         <input type="text" className="form-control" id="wd-search-student-name" placeholder="Search Students" />
-                        <a className="input-group-text"><MdOutlineKeyboardArrowDown /> </a></div></div>
+                        <a className="input-group-text"><MdOutlineKeyboardArrowDown/> </a></div></div>
                 <div className="col mb-3"><label className="form-label fw-bold">
                     Assignment Names</label>
                     <div className="input-group">
-                        <a className="input-group-text"><FaSearch /> </a>
+                        <a className="input-group-text"><FaSearch/> </a>
                         <input className="form-control" placeholder="Search Assignments" />
-                        <a className="input-group-text"> <MdOutlineKeyboardArrowDown /> </a></div>
+                        <a className="input-group-text"> <MdOutlineKeyboardArrowDown/> </a></div>
                 </div> </div>
             <a><button className="btn btn-secondary float-start "><FiFilter className="me-1" />
                 Apply Filters </button> </a> <br /><br />
@@ -37,34 +41,28 @@ export default function Grades() {
                     <thead>
                         <tr>
                             <th>Student Name</th>
-                            {courseAssignments.map((assignment) => (
-                                <th key={assignment._id}>
-                                    {assignment.title}
-                                    <br />
-                                    {`Out of ${assignment.points}`}
-                                </th>
+                            {assignments.map((assignment) => (
+                                <th>{assignment.title}<br />{`Out of ${assignment.points}`}</th>
                             ))}
                         </tr>
                     </thead>
                     <tbody>
-                        {enrolledStudents.map((enrollmentId) => {
-                            const student = students.find((user) => user._id === enrollmentId);
-                            const studentName = student ? `${student.firstName} ${student.lastName}` : 'none';
-
-                            return (
-                                <tr key={enrollmentId}>
-                                    <td>{studentName}</td>
-                                    {courseAssignments.map((assignment) => {
-                                        const studentGrade = courseGrade.find((grade) => grade.assignment === assignment._id && grade.student === enrollmentId);
-                                        return (
-                                            <td key={assignment._id}>
-                                                <input type="text" value={studentGrade ? studentGrade.grade : 'none'} readOnly />
-                                            </td>
-                                        );
-                                    })}
-                                </tr>
-                            );
-                        })}
+                    {enrolledIDs.map((enrolledID)=> {
+                        let student = students.find((student)=>student._id===enrolledID);
+                        let studentID = student&&student._id? student._id : '';
+                       
+                        return (
+                            <tr>
+                                <td>{student ? `${student.firstName} ${student.lastName}` : 'NOT FOUND'}</td>
+                                {assignments.map((assignment) =>{
+                                    let gradeObj = grades.find((grade)=>grade.assignment===assignment._id && grade.student === studentID);
+                                    return (
+                                        <td><input type="text" value={`${gradeObj? gradeObj.grade : 'N/A'}`}/></td>
+                                    )
+                                })}
+                            </tr>
+                        )
+                    })}
                     </tbody>
                 </table>
             </div></div>
