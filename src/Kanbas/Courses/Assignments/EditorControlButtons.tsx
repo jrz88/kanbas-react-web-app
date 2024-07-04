@@ -11,14 +11,9 @@ export default function EditorControlButtons({assignmentId, assignmentName, dele
      }) {
 
     return (
-        <div className=" align-items-center float-end">
-            <button id="wd-assignment-delete-btn" className="btn p-0"
-                    data-bs-toggle="modal"
-                    data-bs-target= {`#wd-delete-${assignmentId}`}>
-                <FaTrash className="text-danger me-2"/>
-            </button>
-            <GreenCheckmark/>
-            <IoEllipsisVertical className="fs-6"/>
+        <div className="  align-items-center float-end">
+            <button className="btn p-0" data-bs-toggle="modal"  data-bs-target= {`#wd-delete-${assignmentId}`}><FaTrash className="text-danger me-2"/></button>
+            <GreenCheckmark/><IoEllipsisVertical className="fs-6"/>
             <DeleteAssignmentDialog assignmentId={assignmentId} deleteAssignment={deleteAssignment} assignmentName={assignmentName} />
         </div>
     );
