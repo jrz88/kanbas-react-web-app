@@ -1,32 +1,37 @@
 import AssignmentControls from "./AssignmentControls";
 import AssignmentControlButtons from "./AssignmentControlButtons";
-import LessonControlButtons from "../Modules/LessonControlButtons";
+import EditorControlButtons from "./EditorControlButtons";
 import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
 import TitleButtons from "./TitleButtons";
 import "./Assignment.css";
+import {MdOutlineAssignment} from "react-icons/md";
+
 
 import { useParams } from "react-router";
 import * as db from "../../Database";
-
+import { deleteAssignment } from "./reducer";
+import { useSelector } from "react-redux";
 export default function Assignments() {
   const { cid } = useParams();
-  const assignments = db.assignments;
+  const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
   return (
     <div id="wd-assignments">
       <AssignmentControls /><br />
       <ul id="wd-assignments" className="list-group rounded-0 text-nowrap">
-        <li className="wd-assignment list-group-item p-0 mb-5 fs-5 border-gray text-nowrap">
-          <div className="wd-assignments-title p-3 ps-2 bg-secondary">
-            <BsGripVertical className="me-1 fs-3" />
-            <GoTriangleDown className="me-1 fs-5" />
-            ASSIGNMENTS
-            <TitleButtons />
-          </div>
+        {assignments.filter((assignment: any) => assignment.course === cid)
+          .map((assignment: any) => (
+            <li className="wd-assignment list-group-item p-0 mb-5 fs-5 border-gray text-nowrap">
+              <div className="wd-assignments-title p-3 ps-2 bg-secondary">
+                <BsGripVertical className="me-1 fs-3" />
+                <GoTriangleDown className="me-1 fs-5" />
+                ASSIGNMENTS
+                <TitleButtons />
+              </div>
 
-          <ul className="list-group rounded-0 text-nowrap green-left-border">
-            {/*
+              <ul className="list-group rounded-0 text-nowrap green-left-border">
+                {/*
             <li className="list-group-item p-3 ps-1 d-flex text-nowrap">
               <div className="me-2 fs-3 float-end">
               <AssignmentControlButtons />
@@ -74,27 +79,28 @@ export default function Assignments() {
             </li>
           </ul>
         </li>*/}
-            {assignments.filter((assignment: any) => assignment.course === cid).map((assignment: any) => (
-              <li className="list-group-item p-3 ps-1 d-flex text-nowrap">
-                <div className="me-2 fs-3 float-end">
-                  <AssignmentControlButtons />
-                </div>
-                <div className="flex-fill">
-                  <a className="wd-assignment-link bold no-underline text-black" href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
-                    {assignment.title}
-                  </a><br />
-                  <a className="text-danger no-underline"> Multiple Modules</a> | <strong>Not available until</strong> {assignment.availableTime} |<br />
-                  <strong>Due</strong> {assignment.dueTime} | {assignment.points} pts
-                </div>
-                <LessonControlButtons />
-              </li>
+                {assignments.filter((assignment: any) => assignment.course === cid).map((assignment: any) => (
+                  <li className="list-group-item p-3 ps-1 d-flex text-nowrap">
+                    <div className="me-2 fs-3 float-end">
+                      <AssignmentControlButtons />
+                    </div>
+                    <div className="flex-fill">
+                      <a className="wd-assignment-link bold no-underline text-black" href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
+                        {assignment.title}
+                      </a><br />
+                      <a className="text-danger no-underline"> Multiple Modules</a> | <strong>Not available until</strong> {assignment.availableTime} |<br />
+                      <strong>Due</strong> {assignment.dueTime} | {assignment.points} pts
+                    </div>
+                    <EditorControlButtons assignmentId={assignment._id} assignmentName={assignment.title} deleteAssignment={deleteAssignment}/>
+                    
+                  </li>
 
-            ))}
+                ))}
 
 
-          </ul>
+              </ul>
 
-          {/* <input id="wd-search-assignment"
+              {/* <input id="wd-search-assignment"
                placeholder="Search for Assignments" /> 
                <button id="wd-add-assignment-group">+ Group</button> 
                <button id="wd-add-assignment">+ Assignment</button>
@@ -135,7 +141,8 @@ export default function Assignments() {
           </li>
 
     </ul>*/}
-        </li>
+            </li>
+          ))}
       </ul>
     </div>
   )

@@ -14,6 +14,8 @@ const assignmentSlice = createSlice({
                 course: assignment.course,
                 description: assignment.description,
                 points: assignment.points,
+                dueTime: new Date().getTime().toString(),
+                availableTime: new Date().getTime().toString(),
                 due: assignment.due,
                 availableFrom: assignment.availableFrom,
                 availableUntil: assignment.availableUntil,

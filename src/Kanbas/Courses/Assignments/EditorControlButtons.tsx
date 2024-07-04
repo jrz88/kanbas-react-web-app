@@ -2,6 +2,7 @@ import { IoEllipsisVertical } from "react-icons/io5";
 import GreenCheckmark from "../Modules/GreenCheckmark";
 import {FaTrash} from "react-icons/fa";
 import DeleteAssignmentDialog from "./DeleteAssignmentDialog";
+
 export default function EditorControlButtons({assignmentId, assignmentName, deleteAssignment}:
      {
          assignmentId: string;
@@ -10,14 +11,14 @@ export default function EditorControlButtons({assignmentId, assignmentName, dele
      }) {
 
     return (
-        <div className="d-flex align-items-center float-end">
+        <div className=" align-items-center float-end">
             <button id="wd-assignment-delete-btn" className="btn p-0"
                     data-bs-toggle="modal"
-                    data-bs-target= {`#wd-delete-assignment-dialog-${assignmentId}`}>
+                    data-bs-target= {`#wd-delete-${assignmentId}`}>
                 <FaTrash className="text-danger me-2"/>
             </button>
             <GreenCheckmark/>
-            <IoEllipsisVertical className="fs-4"/>
+            <IoEllipsisVertical className="fs-6"/>
             <DeleteAssignmentDialog assignmentId={assignmentId} deleteAssignment={deleteAssignment} assignmentName={assignmentName} />
         </div>
     );
