@@ -5,17 +5,29 @@ import { BsGripVertical } from "react-icons/bs";
 import { GoTriangleDown } from "react-icons/go";
 import TitleButtons from "./TitleButtons";
 import "./Assignment.css";
-import {MdOutlineAssignment} from "react-icons/md";
-
+import { MdOutlineAssignment } from "react-icons/md";
+import * as client from "./client";
+import { useEffect } from "react";
 
 import { useParams } from "react-router";
 import * as db from "../../Database";
-import { deleteAssignment } from "./reducer";
-import { useSelector } from "react-redux";
+import { setAssignments, deleteAssignment } from "./reducer";
+import { useSelector, useDispatch } from "react-redux";
 export default function Assignments() {
   const { cid } = useParams();
   const { assignments } = useSelector((state: any) => state.assignmentsReducer);
-
+  const dispatch = useDispatch();
+  const removeAssignment = async (assignmentId: string) => {
+    await client.deleteAssignment(assignmentId);
+    dispatch(deleteAssignment(assignmentId));
+  };
+  const fetchAssignments = async () => {
+    const assignments = await client.findAssignments(cid as string);
+    dispatch(setAssignments(assignments));
+  }
+  useEffect(() => {
+    fetchAssignments();
+  }, []);
   return (
     <div id="wd-assignments">
       <AssignmentControls /><br />
@@ -88,11 +100,12 @@ export default function Assignments() {
                       <a className="wd-assignment-link bold no-underline text-black" href={`#/Kanbas/Courses/${cid}/Assignments/${assignment._id}`}>
                         {assignment.title}
                       </a><br />
-                      <a className="text-danger no-underline"> Multiple Modules</a> | <strong>Not available until</strong> {assignment.availableTime} |<br />
+                      <a className="text-danger no-underline"> Multiple Modules</a> | 
+                      <strong>Not available until</strong> {assignment.availableTime} |<br />
                       <strong>Due</strong> {assignment.dueTime} | {assignment.points} pts
                     </div>
-                    <EditorControlButtons assignmentId={assignment._id} assignmentName={assignment.title} deleteAssignment={deleteAssignment}/>
-                    
+                    <EditorControlButtons assignmentId={assignment._id} assignmentName={assignment.title} deleteAssignment={removeAssignment} />
+
                   </li>
 
                 ))}

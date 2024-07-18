@@ -3,6 +3,7 @@ import assignments from "../../Database/assignments.json";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addAssignment, updateAssignment } from "./reducer";
+import * as client from "./client";
 
 
 export default function AssignmentEditor() {
@@ -11,11 +12,18 @@ export default function AssignmentEditor() {
     const dispatch = useDispatch();
     const { assignments } = useSelector((state: any) => state.assignmentsReducer);
 
-    //change variable
     const selectedAssignment = assignments.find((a: any) => a._id === aid) || {};
     const [assignment, setAssignment] = useState(selectedAssignment);
     const newAssignment = aid === "new";
-
+    
+    const createAssignment = async (assignment: any) => {
+        const newAssignment = await client.createAssignment(assignment);
+        dispatch(addAssignment(newAssignment));
+    };
+    const saveAssignment = async (assignment: any) => {
+        const newAssignment = await client.updateAssignment(assignment);
+        dispatch(updateAssignment(newAssignment));
+    };
     return (
         <div id="wd-assignment-editor" className="pt-2">
             <form>
@@ -161,8 +169,8 @@ export default function AssignmentEditor() {
                 <a href={`#/Kanbas/Courses/${cid}/Assignments`}>
                     <button id="wd-save" className="btn btn-lg btn-danger me-2 mb-2 float-end"
                         onClick={newAssignment
-                            ? () => dispatch(addAssignment({ ...assignment, "course": cid }))
-                            : () => dispatch(updateAssignment({ ...assignment, "course": cid }))
+                            ? () => createAssignment({ ...assignment, "course": cid })
+                            : () => saveAssignment({ ...assignment, "course": cid })
                         }>
                         Save
                     </button></a>
